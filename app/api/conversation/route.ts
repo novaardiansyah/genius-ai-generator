@@ -2,6 +2,8 @@ import { auth } from '@clerk/nextjs'
 import { NextResponse } from 'next/server'
 import { Configuration, OpenAIApi } from 'openai'
 
+import { increaseApiLimit, checkApiLimit } from '@/lib/api-limit'
+
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
 })
@@ -27,6 +29,14 @@ export async function POST(
     if (!messages) {
       return new NextResponse("Message not found", { status: 400 })
     }
+
+    const freeTrial = await checkApiLimit()
+
+    if (!freeTrial) {
+      return new NextResponse("Free trial limit reached", { status: 403 })
+    }
+
+    await increaseApiLimit()
 
     // TODO: remove this comment for real request
     // const response = await openai.createChatCompletion({
