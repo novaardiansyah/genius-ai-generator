@@ -69,7 +69,7 @@ const ConversationPage = () => {
           <Terminal className="h-4 w-4" />
           <AlertTitle>Heads up!</AlertTitle>
           <AlertDescription>
-            Apologies, the AI is experiencing technical difficulties. As an alternative, we're utilizing the non-AI to generate images.
+            Apologies, the AI is experiencing technical difficulties. As an alternative, we are utilizing the non-AI to generate images.
           </AlertDescription>
         </Alert>
 
