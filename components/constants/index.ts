@@ -1,6 +1,6 @@
 import { LayoutDashboard, MessageSquare, ImageIcon, VideoIcon, Music, Code, Settings } from 'lucide-react'
 
-const tools = [
+export const tools = [
   {
     label: 'Dashboard',
     icon: LayoutDashboard,
@@ -51,4 +51,4 @@ const tools = [
   }
 ]
 
-export { tools }
+export const MAX_FREE_COUNTS = 5
