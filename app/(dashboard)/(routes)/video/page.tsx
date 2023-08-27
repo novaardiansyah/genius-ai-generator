@@ -4,7 +4,7 @@ import * as z from 'zod'
 import axios from 'axios'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { Music, Terminal } from 'lucide-react'
+import { VideoIcon, Terminal } from 'lucide-react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'
 
@@ -17,9 +17,9 @@ import { Heading } from '@/components/heading'
 import { Empty } from '@/components/empty'
 import { Loader } from '@/components/loader'
 
-const MusicPage = () => {
+const VideoPage = () => {
   const router = useRouter()
-  const [music, setMusic] = useState<string>()
+  const [video, setVideo] = useState<string>()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -32,9 +32,9 @@ const MusicPage = () => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      setMusic(undefined)
-      const response = await axios.post('/api/music', values)
-      setMusic(response.data.audio)
+      setVideo(undefined)
+      const response = await axios.post('/api/video', values)
+      setVideo(response.data[0])
     } catch (error: any) {
       // TODO: OpenAI pro version
       console.log('error', error?.message)
@@ -47,11 +47,11 @@ const MusicPage = () => {
   return (
     <>
       <Heading 
-        title="Music Generation" 
-        description="Turn your ideas into music."
-        icon={Music} 
-        iconColor="text-emerald-500" 
-        bgColor="bg-emerald-500/10" 
+        title="Video Generation" 
+        description="Turn your ideas into awesome videos."
+        icon={VideoIcon} 
+        iconColor="text-orange-700" 
+        bgColor="bg-orange-700/10" 
       />
 
       <div className="px-4 lg:px-8 pb-8">
@@ -59,7 +59,7 @@ const MusicPage = () => {
           <Terminal className="h-4 w-4" />
           <AlertTitle>Heads up!</AlertTitle>
           <AlertDescription>
-            Apologies, but the music generation feature is not available in this <span className="font-bold">demo</span> version. <br className="xs:hidden md:block" /> However, feel free to explore we have provided <i>random sample responses</i> for your enjoyment.
+            Apologies, but the video generation feature is not available in this <span className="font-bold">demo</span> version. <br className="xs:hidden md:block" /> However, feel free to explore we have provided <i>random sample responses</i> for your enjoyment.
           </AlertDescription>
         </Alert>
 
@@ -77,7 +77,7 @@ const MusicPage = () => {
                       <Input 
                         className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent" 
                         disabled={isLoading}
-                        placeholder="Piano music with a happy vibe"  
+                        placeholder="Clown fish swimming in a coral reef"  
                         {...field}
                       />
                     </FormControl>
@@ -99,17 +99,14 @@ const MusicPage = () => {
             </div>
           )}
 
-          {!music && !isLoading && (
-            <Empty label="No music generated yet." />
+          {!video && !isLoading && (
+            <Empty label="No video generated yet." />
           )}
 
-          {music && (
-            <audio
-              controls
-              className="w-full mt-8"
-            >
-              <source src={music} type="audio/mpeg" />
-            </audio>
+          {video && (
+            <video className="w-full aspect-video mt-8 rounded-lg border bg-black" controls>
+              <source src={video} type="video/mp4" />
+            </video>
           )}
         </div>
       </div>
@@ -117,4 +114,4 @@ const MusicPage = () => {
   )
 }
 
-export default MusicPage
+export default VideoPage
