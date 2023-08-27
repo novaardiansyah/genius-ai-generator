@@ -14,7 +14,7 @@ export async function POST(
   try {
     const { userId } = auth()
     const body = await req.json()
-    const { messages } = body
+    const { prompt, amount = 1, resolution = '512x512' } = body
 
     if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 })
@@ -24,25 +24,28 @@ export async function POST(
       return new NextResponse("OpenAI API Key not found", { status: 500 })
     }
 
-    if (!messages) {
-      return new NextResponse("Message not found", { status: 400 })
+    if (!prompt) {
+      return new NextResponse("Prompt not found", { status: 400 })
     }
 
     // TODO: remove this comment for real request
-    // const response = await openai.createChatCompletion({
-    //   model: 'gpt-3.5-turbo',
-    //   messages
+    // const response = await openai.createImage({
+    //   prompt,
+    //   n: parseInt(amount),
+    //   size: resolution
     // })
 
-    // return NextResponse.json(response.data.choices[0].message, { status: 200 })
+    // return NextResponse.json(response.data.data, { status: 200 })
 
     // TODO: comment this out for real request
-    return NextResponse.json({
-      role: "bot",
-      content: "Sorry, I'm having trouble understanding you right now. Please try again later."
-    }, { status: 200 })
+    let images = []
+    for (let i = 0; i < parseInt(amount); i++) {
+      images.push({ url: `https://source.unsplash.com/random/${resolution}/?${prompt}%20${i}` })
+    }
+
+    return NextResponse.json(images, { status: 200 })
   } catch (error) {
-    console.error("[CONVERSATION_ERROR]", error)
+    console.error("[IMAGES_ERROR]", error)
     return new NextResponse("Internal Server Error", { status: 500 })
   }
 }
