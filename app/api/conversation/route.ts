@@ -28,12 +28,19 @@ export async function POST(
       return new NextResponse("Message not found", { status: 400 })
     }
 
-    const response = await openai.createChatCompletion({
-      model: 'gpt-3.5-turbo',
-      messages
-    })
+    // TODO: remove this comment for real request
+    // const response = await openai.createChatCompletion({
+    //   model: 'gpt-3.5-turbo',
+    //   messages
+    // })
 
-    return NextResponse.json(response.data.choices[0].message, { status: 200 })
+    // return NextResponse.json(response.data.choices[0].message, { status: 200 })
+
+    // TODO: comment this out for real request
+    return NextResponse.json({
+      role: "bot",
+      content: "Sorry, I'm having trouble understanding you right now. Please try again later."
+    }, { status: 200 })
   } catch (error) {
     console.error("[CONVERSATION_ERROR]", error)
     return new NextResponse("Internal Server Error", { status: 500 })

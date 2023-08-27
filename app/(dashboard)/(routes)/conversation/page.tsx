@@ -8,6 +8,7 @@ import { Heading } from '@/components/heading'
 import { MessageSquare } from 'lucide-react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'
+import { cn } from '@/lib/utils'
 
 import { formSchema } from './constants'
 import { Form, FormControl, FormField, FormItem } from '@/components/ui/form'
@@ -16,6 +17,8 @@ import { Button } from '@/components/ui/button'
 import { ChatCompletionRequestMessage } from 'openai'
 import { Empty } from '@/components/empty'
 import { Loader } from '@/components/loader'
+import { UserAvatar } from '@/components/user-avatar'
+import { BotAvatar } from '@/components/bot-avatar'
 
 const ConversationPage = () => {
   const router = useRouter()
@@ -101,10 +104,19 @@ const ConversationPage = () => {
             <Empty label="No conversation yet." />
           )}
 
-          <div className="flex flex-col-reserve gap-y-4">
-            {messages.map((message, index) => (
-              <div key={`messages-${index}`}>
-                {message.content}
+          <div className="flex flex-col-reverse gap-y-4">
+            {messages.map((message) => (
+              <div 
+                key={message.content} 
+                className={cn(
+                  "p-6 w-full flex items-start gap-x-8 rounded-lg",
+                  message.role === "user" ? "bg-white border border-black/10" : "bg-muted",
+                )}
+              >
+                {message.role === "user" ? <UserAvatar /> : <BotAvatar />}
+                <p className="text-sm">
+                  {message.content}
+                </p>
               </div>
             ))}
           </div>
