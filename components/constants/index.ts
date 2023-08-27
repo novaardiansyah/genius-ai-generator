@@ -30,7 +30,7 @@ const tools = [
   },
   {
     label: 'Video Generation',
-    icon: Music,
+    icon: VideoIcon,
     color: 'text-orange-700',
     bgColor: 'bg-orange-700/10',
     href: '/video'
@@ -41,6 +41,13 @@ const tools = [
     color: 'text-green-700',
     bgColor: 'bg-green-700/10',
     href: '/code'
+  },
+  {
+    label: 'Settings',
+    icon: Settings,
+    color: null,
+    bgColor: null,
+    href: '/settings'
   }
 ]
 
