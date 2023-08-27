@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation'
 import { Montserrat } from 'next/font/google'
 
 import { cn } from '@/lib/utils'
-import { tools } from '@/constants'
+import { tools } from '@/components/constants'
 
 const montserrat = Montserrat({
   weight: '600',
@@ -32,7 +32,7 @@ const Sidebar = () => {
             <Link
               key={`routes-${index}`}
               href={route.href}
-              className={cn("text-sm group flex p-3 w-full justify-start font-medium hover:text-white hover:bg-white/10 rounded-lg cursor-pointer transition", 
+              className={cn("text-sm group flex p-3 w-full justify-start font-medium hover:text-white hover:bg-white/10 rounded-lg cursor-pointer transition",
                 pathname === route.href ? 'bg-white/10 text-white' : 'text-zinc-400'
               )}
             >
