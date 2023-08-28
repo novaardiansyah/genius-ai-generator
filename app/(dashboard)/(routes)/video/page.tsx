@@ -17,7 +17,10 @@ import { Heading } from '@/components/heading'
 import { Empty } from '@/components/empty'
 import { Loader } from '@/components/loader'
 
+import { useProModal } from '@/hooks/use-pro-modal'
+
 const VideoPage = () => {
+  const proModal = useProModal()
   const router = useRouter()
   const [video, setVideo] = useState<string>()
 
@@ -37,7 +40,8 @@ const VideoPage = () => {
       setVideo(response.data[0])
     } catch (error: any) {
       // TODO: OpenAI pro version
-      console.log('error', error?.message)
+      if (error?.response?.status === 403) proModal.onOpen()
+      else console.error(error)
     } finally {
       form.reset()
       router.refresh()

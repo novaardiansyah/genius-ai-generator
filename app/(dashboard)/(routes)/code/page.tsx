@@ -21,7 +21,10 @@ import { Loader } from '@/components/loader'
 import { UserAvatar } from '@/components/user-avatar'
 import { BotAvatar } from '@/components/bot-avatar'
 
+import { useProModal } from '@/hooks/use-pro-modal'
+
 const CodePage = () => {
+  const proModal = useProModal()
   const router = useRouter()
   const [messages, setMessages] = useState<ChatCompletionRequestMessage[]>([])
 
@@ -47,7 +50,8 @@ const CodePage = () => {
       setMessages((current) => [...current, userMessage, response.data]) 
     } catch (error: any) {
       // TODO: OpenAI pro version
-      console.log('error', error?.message)
+      if (error?.response?.status === 403) proModal.onOpen()
+      else console.error(error)
     } finally {
       form.reset()
       router.refresh()
