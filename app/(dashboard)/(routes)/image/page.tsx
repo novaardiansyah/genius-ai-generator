@@ -23,9 +23,12 @@ import { Heading } from '@/components/heading'
 import { Card, CardFooter } from '@/components/ui/card'
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert'
 
+import { useProModal } from '@/hooks/use-pro-modal'
+
 const ConversationPage = () => {
-  const [images, setImages] = useState<string[]>([])
+  const proModal = useProModal()
   const router = useRouter()
+  const [images, setImages] = useState<string[]>([])
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -47,7 +50,8 @@ const ConversationPage = () => {
       setImages(urls)
     } catch (error: any) {
       // TODO: OpenAI pro version
-      console.log('error', error?.message)
+      if (error?.response?.status === 403) proModal.onOpen()
+      else console.error(error)
     } finally {
       form.reset()
       router.refresh()

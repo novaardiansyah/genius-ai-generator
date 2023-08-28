@@ -17,7 +17,10 @@ import { Heading } from '@/components/heading'
 import { Empty } from '@/components/empty'
 import { Loader } from '@/components/loader'
 
+import { useProModal } from '@/hooks/use-pro-modal'
+
 const MusicPage = () => {
+  const proModal = useProModal()
   const router = useRouter()
   const [music, setMusic] = useState<string>()
 
@@ -37,7 +40,8 @@ const MusicPage = () => {
       setMusic(response.data.audio)
     } catch (error: any) {
       // TODO: OpenAI pro version
-      console.log('error', error?.message)
+      if (error?.response?.status === 403) proModal.onOpen()
+      else console.error(error)
     } finally {
       form.reset()
       router.refresh()
