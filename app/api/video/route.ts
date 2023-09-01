@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server'
 import Replicate from 'replicate'
 
 import { increaseApiLimit, checkApiLimit } from '@/lib/api-limit'
+import { checkSubscription } from '@/lib/subscription'
 
 const replicate = new Replicate({
   auth: process.env.REPLICATE_API_TOKEN!
@@ -25,12 +26,15 @@ export async function POST(
     }
 
     const freeTrial = await checkApiLimit()
+    const isPro = await checkSubscription()
 
-    if (!freeTrial) {
+    if (!freeTrial && !isPro) {
       return new NextResponse("Free trial limit reached", { status: 403 })
     }
 
-    await increaseApiLimit()
+    if (!isPro) {
+      await increaseApiLimit()
+    }
 
     // TODO: remove this comment for real request
     // const response = await replicate.run(
