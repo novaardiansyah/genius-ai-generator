@@ -18,6 +18,7 @@ import { Empty } from '@/components/empty'
 import { Loader } from '@/components/loader'
 
 import { useProModal } from '@/hooks/use-pro-modal'
+import toast from 'react-hot-toast'
 
 const MusicPage = () => {
   const proModal = useProModal()
@@ -41,7 +42,10 @@ const MusicPage = () => {
     } catch (error: any) {
       // TODO: OpenAI pro version
       if (error?.response?.status === 403) proModal.onOpen()
-      else console.error(error)
+      else {
+        toast.error(error?.message || 'Something went wrong.')
+        console.error(error)
+      }
     } finally {
       form.reset()
       router.refresh()

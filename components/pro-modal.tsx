@@ -14,6 +14,7 @@ import { Card } from '@/components/ui/card'
 
 import { tools } from '@/components/constants'
 import { Check, Zap } from 'lucide-react'
+import toast from 'react-hot-toast'
 
 export const ProModal = () => {
   const [loading, setLoading] = useState(false)
@@ -28,6 +29,7 @@ export const ProModal = () => {
       window.location.href = response.data.url
     } catch (error: any) {
       console.error('STRIPE_CLIENT_ERROR: ', error?.message || 'Something went wrong!')
+      toast.error(error?.message || 'Something went wrong.')
     } finally {
       setLoading(false)
     }
@@ -73,6 +75,7 @@ export const ProModal = () => {
             variant={'premium'} 
             className={cn('w-full')}
             onClick={onSubscribe}
+            disabled={loading}
           >
             Upgrade
             <Zap className="w-4 h-4 ml-2 fill-white" />
